@@ -8,6 +8,7 @@
 #include <iomanip>
 #include <sstream>
 #include <tuple>
+#include <deque>
 
 using namespace std;
 
@@ -23,12 +24,20 @@ int full_size(const map<Date, set<string>>& mp)
 	return size;
 }
 
+
 class Database {
 public:
 	void Add(const Date& date, const string& my_event)
 	{
+		if (db.count(date) == 0)
+		{
+			db_pr_last[date].push_back(my_event);
+		}
+		else
+		{
+			if (db[date].count(my_event) == 0) db_pr_last[date].push_back(my_event);
+		}
 		db[date].insert(my_event);
-		last_add_event_for_date[date] = my_event;
 	}
 	
 	template <typename F>
@@ -39,22 +48,30 @@ public:
 
 		size1 = full_size(db);
 
-		map<Date, set<string>> for_delete;
+		map<Date, deque<string>> for_delete;
 
-		for (const auto& date : db)
+		for (const auto& date : db_pr_last)
 			for (const string& my_event : date.second)
 			{
 				if (func(date.first, my_event))
 				{
-					for_delete[date.first].insert(my_event);
+					for_delete[date.first].push_back(my_event);
 				}
 			}
 
 		for (const auto& date : for_delete)
+		{
 			for (const string& my_event : date.second)
 			{
-					db[date.first].erase(my_event);
+				db[date.first].erase(my_event);
+				db_pr_last[date.first].pop_front();
 			}
+			if (db[date.first].size() == 0)
+			{
+				db.erase(date.first);
+				db_pr_last.erase(date.first);
+			}
+		}
 
 		size2 = full_size(db);
 
@@ -84,7 +101,8 @@ public:
 		else
 		{
 			it = prev(it);
-			return pair<Date, string>(it->first, last_add_event_for_date[it->first]);
+			deque<string> &work = db_pr_last[it->first];
+			return pair<Date, string>(it->first, work[work.size() - 1]);
 		}
 
 	}
@@ -92,15 +110,15 @@ public:
 	void Print(ostream& stream) const
 	{
 		stream << setfill('0');
-		for (const auto& item : db)
+		for (const auto& item : db_pr_last)
 			for (const string& str : item.second)
 				stream << setw(4) << item.first.GetYear() << "-"
 				<< setw(2) << item.first.GetMonth() << "-"
 				<< setw(2) << item.first.GetDay() << " " << str << endl;
 	}
 private:
-	map<Date,set<string>> db;
-	map<Date, string> last_add_event_for_date;
+	map<Date, set<string>> db;
+	map<Date, deque<string>> db_pr_last;
 };
 
 

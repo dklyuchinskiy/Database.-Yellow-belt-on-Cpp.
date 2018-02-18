@@ -62,3 +62,8 @@ bool operator>(const Date& lhs, const Date& rhs);
 bool operator>=(const Date& lhs, const Date& rhs);
 bool operator==(const Date& lhs, const Date& rhs);
 bool operator!=(const Date& lhs, const Date& rhs);
+
+
+ostream& operator<<(ostream& os, const Date& date);
+ostream& operator<<(ostream& os, const pair<Date, string>& p);
+ostream& operator<<(ostream& os, const pair<Date, set<string>>& p);
