@@ -1,6 +1,8 @@
 #pragma once
 #include "lib.h"
 
+using namespace std;
+
 struct Day {
 	Day(int d) : value(d) { }
 	Day & operator=(const Day& right)
@@ -47,9 +49,6 @@ private:
 	Month month;
 	Day day;
 };
-
-Date ParseDate(istream& is);
-
 
 bool operator<(const Date& lhs, const Date& rhs);
 bool operator>(const Date& lhs, const Date& rhs);
