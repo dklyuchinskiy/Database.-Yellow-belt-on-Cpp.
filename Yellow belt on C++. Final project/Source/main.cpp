@@ -3,9 +3,7 @@
 #include "condition_parser.h"
 #include "node.h"
 #include "test_runner.h"
-#include <iostream>
 
-#include <iostream>
 #include <stdexcept>
 
 using namespace std;
@@ -27,10 +25,9 @@ string ParseEvent(istream& is)
 void TestAll();
 
 int main() {
-//  TestAll();
 
- 
-//  return 0;
+  TestAll();
+
   Database db;
 
   for (string line; getline(cin, line); ) {

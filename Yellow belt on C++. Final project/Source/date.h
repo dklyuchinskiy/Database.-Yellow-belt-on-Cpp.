@@ -1,4 +1,5 @@
 #pragma once
+#include "lib.h"
 
 struct Day {
 	Day(int d) : value(d) { }
@@ -35,30 +36,24 @@ public:
 	Date() : year(0), month(0), day(0) {}
 	Date(Year y, Month m, Day d) : year(y), month(m), day(d) { }
 
-	Date & operator=(const Date& right)
-	{
-		day = right.day;
-		month = right.month;
-		year = right.year;
-		return *this;
-	}
+	Date & operator=(const Date& right);
 	
 	int GetYear() const;
 	int GetMonth() const;
 	int GetDay() const;
-	//void SetData(const Day& new_day, const Month& new_month, const Year& new_year);
+
 private:
-	Day day;
-	Month month;
 	Year year;
+	Month month;
+	Day day;
 };
 
 Date ParseDate(istream& is);
 
 
 bool operator<(const Date& lhs, const Date& rhs);
-bool operator<=(const Date& lhs, const Date& rhs);
 bool operator>(const Date& lhs, const Date& rhs);
+bool operator<=(const Date& lhs, const Date& rhs);
 bool operator>=(const Date& lhs, const Date& rhs);
 bool operator==(const Date& lhs, const Date& rhs);
 bool operator!=(const Date& lhs, const Date& rhs);

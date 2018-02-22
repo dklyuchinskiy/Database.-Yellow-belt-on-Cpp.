@@ -1,13 +1,4 @@
-#include <iostream>
-#include <algorithm>
-#include <string>
-#include <map>
-#include <set>
-#include <exception>
-#include <vector>
-#include <iomanip>
-#include <sstream>
-#include <tuple>
+#include "lib.h"
 
 using namespace std;
 
@@ -79,7 +70,6 @@ ostream& operator<<(ostream& os, const pair<Date, string>& p)
 	os << p.first << " " << p.second;
 
 	return os;
-
 }
 
 ostream& operator<<(ostream& os, const pair<Date, set<string>>& p)
@@ -94,6 +84,14 @@ ostream& operator<<(ostream& os, const pair<Date, set<string>>& p)
 		i++;
 	}
 	return os;
+}
+
+Date & Date::operator=(const Date& right)
+{
+	day = right.day;
+	month = right.month;
+	year = right.year;
+	return *this;
 }
 
 bool there_is_letter(string ch_date)
@@ -116,7 +114,6 @@ Date ParseDate(istream& is)
 	is >> sep2;
 	is >> d;
 
-	
 	Date date(Year{ y }, Month{ m }, Day{ d });
 
 	return date;
